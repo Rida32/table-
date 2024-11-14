@@ -1,51 +1,92 @@
 import logo from "./logo.svg";
 import "./App.css";
 import React, { useEffect, useState } from "react";
+import Table from "./components/Table";
+import Task from "./components/Task";
+import ToDo from "./components/ToDo";
 
 function App() {
   const [students, setStudents] = useState([]);
+  const [showTodo, setShowTodo] = useState(true)
   
-  const [studentName, setStudentName] = useState("");
-  const [fatherName, setFatherName] = useState("");
-  const [className, setClassName] = useState("");
-  const [studentNo, setStudentNo] = useState("");
-  const [currentAddress, setCurrentAddress] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [gender, setGender] = useState("");
+  // const [studentName, setStudentName] = useState("");
+  // const [fatherName, setFatherName] = useState("");
+  // const [className, setClassName] = useState("");
+  // const [studentNo, setStudentNo] = useState("");
+  // const [currentAddress, setCurrentAddress] = useState("");
+  // const [dateOfBirth, setDateOfBirth] = useState("");
+  // const [gender, setGender] = useState("");
+
+const [studentData, setStudentData] = useState({
+  name: "",
+  fatherName: "",
+  className: "",
+  studentNo: "",
+  currentAddress: "",
+  dateOfBirth: "",
+  gender: "",
+});
+
+const handleChange = (e) => {
+  // const { name, value } = e.target;
+  const name =e.target.name
+  const value=e.target.value
+  setStudentData({
+    ...studentData,
+    [name]: value,
+  });
+};
 
   const addStudent = () => {
   
-
-    const newStudent = {
-      // srNo:students.length + 1,
-      studentName:studentName,
-      fatherName:fatherName,
-      className:className,
-      studentNo:studentNo,
-      currentAddress:currentAddress,
-      dateOfBirth:dateOfBirth,
-      gender:gender,
-    };
-
-    setStudents([...students, newStudent]);
+    // const newStudent = {
+    //   // srNo:students.length + 1,
+    //   name:studentName,
+    //   fatherName:fatherName,
+    //   className:className,
+    //   studentNo:studentNo,
+    //   currentAddress:currentAddress,
+    //   dateOfBirth:dateOfBirth,
+    //   gender:gender,
+    // };
+    if (studentData.name=="" || studentData.fatherName=="") {
+      return;
+     }
     
-    setStudentName("");
-    setFatherName("");
-    setClassName("");
-    setStudentNo("");
-    setCurrentAddress("");
-    setDateOfBirth("");
-    setGender("");
+
+    setStudents([...students, studentData]);
+    
+    setStudentData({
+      name: "",
+      fatherName: "",
+      className: "",
+      studentNo: "",
+      currentAddress: "",
+      dateOfBirth: "",
+      gender: "",
+    });
   };
+  //   setStudentName("");
+  //   setFatherName("");
+  //   setClassName("");
+  //   setStudentNo("");
+  //   setCurrentAddress("");
+  //   setDateOfBirth("");
+  //   setGender("");
+  // };
+  // function clearinputs() {
+  //   setStudentName("");
+  //   setFatherName("");
+  //   setClassName("");
+  //   setStudentNo("");
+  //   setCurrentAddress("");
+  //   setDateOfBirth("");
+  //   setGender("");
+  // }
   const handleDelete = (index) => {
     const updatedStudents = students.filter((_, i) => i !== index);
     setStudents(updatedStudents);
   };
-
-
-  useEffect(() => {
-    console.log("students", students);
-  }, [students]);
 
   return (
     <div className="App">
@@ -72,11 +113,12 @@ function App() {
                       <label for="studentName">Student Name</label>
                       <input
                         type="text"
-                        name="studentName"
+                        name="name"
                         className="form-control"
                         id="studentName"
-                        value={studentName}
-                        onChange={(event) => setStudentName(event.target.value)}
+                        value={studentData.name}
+                        onChange={handleChange}
+                        placeholder="student name"
                       ></input>
                     </div>
                     <br></br>
@@ -86,9 +128,9 @@ function App() {
                         type="text"
                         name="fatherName"
                         className="form-control"
-                        id="fatherName"
-                        value={fatherName}
-                        onChange={(event) => setFatherName(event.target.value)}
+                        value={studentData.fatherName}
+                        onChange={handleChange}
+                        placeholder="Father's Name"
                       ></input>
                     </div>
                     <br></br>
@@ -99,8 +141,8 @@ function App() {
                         name="className"
                         className="form-control"
                         id="className"
-                        value={className}
-                        onChange={(event) => setClassName(event.target.value)}
+                        value={studentData.className}
+                        onChange={handleChange}
                       ></input>
                     </div>
                     <br></br>
@@ -111,8 +153,8 @@ function App() {
                         name="studentNo"
                         className="form-control"
                         id="studentNo"
-                        value={studentNo}
-                        onChange={(event) => setStudentNo(event.target.value)}
+                        value={studentData.studentNo}
+                        onChange={handleChange}
                       ></input>
                     </div>
                     <br></br>
@@ -123,10 +165,8 @@ function App() {
                         name="currentAddress"
                         className="form-control"
                         id="currentAddress"
-                        value={currentAddress}
-                        onChange={(event) =>
-                          setCurrentAddress(event.target.value)
-                        }
+                        value={studentData.currentAddress}
+                        onChange={handleChange}
                       ></input>
                     </div>
                     <br></br>
@@ -137,8 +177,8 @@ function App() {
                         name="dateOfBirth"
                         className="form-control"
                         id="dateOfBirth"
-                        value={dateOfBirth}
-                        onChange={(event) => setDateOfBirth(event.target.value)}
+                        value={studentData.dateOfBirth}
+                        onChange={handleChange}
                       ></input>
                     </div>
                     <br></br>
@@ -149,78 +189,41 @@ function App() {
                         name="gender"
                         className="form-control"
                         id="gender"
-                        value={gender}
-                        onChange={(event) => setGender(event.target.value)}
+                        value={studentData.gender}
+                        onChange={handleChange}
                       ></input>
                     </div>
                     <br></br>
                     <div className="form_action-button">
                       <button onClick={() => {addStudent()}} className="btn-etdbtn">Submit</button>
                       <button
-                        className="btn"
-                        onClick={() => {
-                          
-                          setStudentName("");
-                          setFatherName("");
-                          setClassName("");
-                          setStudentNo("");
-                          setCurrentAddress("");
-                          setDateOfBirth("");
-                          setGender("");
-                        }}
-                      >Reset</button>
+                        type="button" 
+                        onClick={() => setStudentData({
+                             name: "",
+                             fatherName: "",
+                             className: "",
+                             studentNo: "",
+                             currentAddress: "",
+                             dateOfBirth: "",
+                             gender: "",
+                             })}
+                               >
+                        Reset</button>
                       <button onClick={addStudent}>Submit2</button>
                     </div>
                   </>
                 </td>
                 <td>
-                  <table
-                    className="list table table-striped table-hover"
-                    id="studentList"
-                  >
-                    <thead>
-                      <tr>
-                        <th>Sr No</th>
-                        <th>Student Name</th>
-                        <th>Father Name</th>
-                        <th>Class Name</th>
-                        <th>Student No</th>
-                        <th>Current Address</th>
-                        <th>Date of Birth</th>
-                        <th>Gender</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tbody">
-
-                    {students.map((student, index) => (
-                      <tr key={index}>
-                        <td>{index+1}</td>
-                        <td>{student.studentName}</td>
-                        <td>{student.fatherName}</td>
-                        <td>{student.className}</td>
-                        <td>{student.studentNo}</td>
-                        <td>{student.currentAddress}</td>
-                        <td>{student.dateOfBirth}</td>
-                        <td>{student.gender}</td>
-                        <td>
-                          <button onClick={() => handleDelete(index)}>Delete</button>
-                        </td>
-                      </tr>
-                    ))}
-
-                    </tbody>
-                  </table>
+                  <Table students={students} handleDelete={handleDelete}/>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div>
-            <a href="#" className="btn btn-custom">
-              Open Form
-            </a>
-          </div>
-          <br></br>
+          <Task></Task>
+          <button onClick={() => setShowTodo(!showTodo)}>{showTodo ? "Hide TODO" : "Show TODO"}</button>
+          {showTodo?<ToDo></ToDo>:<></>}
+          
+          {/* {showTodo&&<ToDo></ToDo>} */}
         </div>
         <footer id="footer"></footer>
       </>
